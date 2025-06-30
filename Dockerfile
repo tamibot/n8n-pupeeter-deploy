@@ -32,6 +32,8 @@ WORKDIR /data
 # Instalar n8n y Puppeteer
 RUN npm install -g n8n puppeteer
 
+RUN npm install -g puppeteer-extra puppeteer-extra-plugin-stealth puppeteer-extra-plugin-user-preferences
+
 # Exponer el puerto
 EXPOSE 5678
 
