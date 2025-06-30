@@ -1,6 +1,6 @@
 FROM node:18-bullseye
 
-# Instala dependencias del sistema necesarias para Puppeteer y Chromium
+# Instala dependencias necesarias para Puppeteer y Chromium
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
@@ -22,6 +22,8 @@ RUN apt-get update && apt-get install -y \
     libu2f-udev \
     libvulkan1 \
     libxcb-dri3-0 \
+    libgbm1 \
+    libxshmfence1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Carpeta de trabajo
