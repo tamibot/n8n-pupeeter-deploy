@@ -30,13 +30,16 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /data
 
 # Instalar n8n y Puppeteer
-RUN npm install -g n8n puppeteer
+RUN npm install -g n8n
 
-RUN npm install -g n8n puppeteer \
-    puppeteer-extra \
-    puppeteer-extra-plugin-stealth \
-    puppeteer-extra-plugin-user-preferences \
-    puppeteer-extra-plugin-user-data-dir
+# Crear carpeta para nodos custom
+RUN mkdir -p /home/node/.n8n/nodes
+
+# Copiar el package.json para los nodos custom
+COPY package.json /home/node/.n8n/nodes/
+
+# Instalar puppeteer y plugins necesarios en la carpeta donde n8n busca los nodos
+RUN cd /home/node/.n8n/nodes && npm install
     
 # Exponer el puerto
 EXPOSE 5678
