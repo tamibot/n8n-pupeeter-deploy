@@ -1,6 +1,6 @@
-FROM n8nio/n8n
+FROM node:18-bullseye
 
-# Instala dependencias necesarias para Puppeteer
+# Instala dependencias del sistema necesarias para Puppeteer y Chromium
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
@@ -24,11 +24,14 @@ RUN apt-get update && apt-get install -y \
     libxcb-dri3-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Instala Puppeteer
-RUN npm install -g puppeteer
+# Carpeta de trabajo
+WORKDIR /data
+
+# Instalar n8n y Puppeteer
+RUN npm install -g n8n puppeteer
 
 # Exponer el puerto
 EXPOSE 5678
 
-# Comando para arrancar n8n
+# Comando para correr n8n
 CMD ["n8n"]
