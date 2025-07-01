@@ -1,6 +1,6 @@
 FROM node:18-bullseye
 
-# Instala dependencias necesarias para Puppeteer y Chromium
+# Instalar dependencias del sistema para Chromium
 RUN apt-get update && apt-get install -y \
     wget \
     ca-certificates \
@@ -26,21 +26,21 @@ RUN apt-get update && apt-get install -y \
     libxshmfence1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Carpeta de trabajo
-WORKDIR /data
+# Crear carpeta para datos de n8n
+WORKDIR /home/node/.n8n
 
-# Instalar n8n y Puppeteer
+# Instalar n8n globalmente
 RUN npm install -g n8n
 
-# Crear carpeta para nodos custom
-RUN mkdir -p /home/node/.n8n/nodes
+# Instalar Puppeteer y sus plugins en la carpeta de nodos custom
+RUN mkdir -p /home/node/.n8n/nodes && cd /home/node/.n8n/nodes && \
+    npm init -y && \
+    npm install puppeteer puppeteer-extra \
+    puppeteer-extra-plugin-stealth \
+    puppeteer-extra-plugin-user-data-dir \
+    puppeteer-extra-plugin-user-preferences \
+    n8n-nodes-puppeteer
 
-# Copiar el package.json para los nodos custom
-COPY package.json /home/node/.n8n/nodes/
-
-# Instalar puppeteer y plugins necesarios en la carpeta donde n8n busca los nodos
-RUN cd /home/node/.n8n/nodes && npm install
-    
 # Exponer el puerto
 EXPOSE 5678
 
